@@ -58,3 +58,11 @@ let food1, food2 = dinner
 
 let tupledAdd(x, y) = x + y
 tupledAdd(3, 7)
+
+// Lists
+let fruits = ["apple"; "pear"; "banana"]
+let moreFruits = "pineapple" :: fruits
+let fruitsAndVegetables = ["potato"; "cabbige"] @ fruits
+
+// Ranges
+let oneToTen = [1 .. 10]
