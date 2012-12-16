@@ -27,8 +27,8 @@ type DrinkType =
     | Spirits
 
 type Gender =
-    | Male
-    | Feemale
+    | Male      = 1
+    | Feemale   = 2
     
 type DrinkEntry = { 
     Type:DrinkType; 
@@ -60,9 +60,6 @@ let drinks = [
     { Type = DrinkType.Spirits; Time = DateTime.Now.AddHours(-1.0); Volume = 40.0<ml>; Strength = 40.0<vol> };
     { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-0.25); Volume = 500.0<ml>; Strength = 5.0<vol> };
 ]
-
-drinks |> Seq.map(fun drink -> calculateAlcoholLevel drink profile DateTime.Now)    
-       |> Seq.sum
 
 let startTime = (List.head drinks).Time
 let chart = 
