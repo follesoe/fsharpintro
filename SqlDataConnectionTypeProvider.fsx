@@ -3,6 +3,7 @@
 #r "System.Data.Linq.dll"
 
 open System
+open System.Linq
 open System.Data
 open System.Data.Linq
 open Microsoft.FSharp.Data.TypeProviders
@@ -14,14 +15,31 @@ let db = dbSchema.GetDataContext()
 // Enable the logging of database activity to the console.
 db.DataContext.Log <- System.Console.Out
 
-let query1 =
+let ukCustomers =
         query {
             for row in db.Employees do
             where (row.Country = "UK")
             select row
         }
-query1 |> Seq.iter (fun row -> printfn "%s %s %s" row.FirstName row.LastName row.Country)
+ukCustomers |> Seq.iter (fun row -> 
+    printfn "%s %s %s" row.FirstName row.LastName row.Country)
 
-let query2 = query { for row in db.Customers do select row }
+let allCustomers = query { 
+    for row in db.Customers do 
+    select (row.CompanyName, row.ContactName) 
+}
 
-query2 |> Seq.iter (fun row -> printfn "%s %s" row.CompanyName row.ContactName)
+allCustomers |> Seq.iter (fun row -> 
+    let (companyName, contactName) = row
+    printfn "%s %s" companyName contactName)
+
+let customersByCountry = 
+    query {
+        for customer in db.Customers do
+        groupBy customer.Country into g
+        sortByDescending (g.Count())
+        select (g.Key, g.Count())
+    } 
+    |> Seq.iter(fun c ->
+            let (country, count) = c
+            printfn "%s: %A customers(s)" country count)
