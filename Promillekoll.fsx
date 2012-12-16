@@ -52,25 +52,29 @@ let calculateAlcoholLevel (drink:DrinkEntry) (profile:Profile) (time:DateTime) =
 
 let profile = { Gender = Gender.Male; Weight = 82.0<kg> };        
 
+let startTime = DateTime.Now.AddHours(-2.0)
 let drinks = [
-    { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-2.0); Volume = 500.0<ml>; Strength = 5.0<vol> };
-    { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-1.75); Volume = 500.0<ml>; Strength = 5.0<vol> };
-    { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-1.5); Volume = 500.0<ml>; Strength = 5.0<vol> };
-    { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-1.0); Volume = 500.0<ml>; Strength = 5.0<vol> };
-    { Type = DrinkType.Spirits; Time = DateTime.Now.AddHours(-1.0); Volume = 40.0<ml>; Strength = 40.0<vol> };
-    { Type = DrinkType.Beer; Time = DateTime.Now.AddHours(-0.25); Volume = 500.0<ml>; Strength = 5.0<vol> };
+    { Type = DrinkType.Beer; Time = startTime.AddHours(-2.0); Volume = 500.0<ml>; Strength = 5.0<vol> };
+    { Type = DrinkType.Beer; Time = startTime.AddHours(-1.75); Volume = 500.0<ml>; Strength = 5.0<vol> };
+    { Type = DrinkType.Beer; Time = startTime.AddHours(-1.5); Volume = 500.0<ml>; Strength = 5.0<vol> };
+    { Type = DrinkType.Beer; Time = startTime.AddHours(-1.0); Volume = 500.0<ml>; Strength = 5.0<vol> };
+    { Type = DrinkType.Spirits; Time = startTime.AddHours(-1.0); Volume = 40.0<ml>; Strength = 40.0<vol> };
+    { Type = DrinkType.Beer; Time = startTime.AddHours(-0.25); Volume = 500.0<ml>; Strength = 5.0<vol> };
 ]
 
-let startTime = (List.head drinks).Time
+let calculateCurrentAlcoholLevelAt profile drinks time = 
+    let alcoholLevel = 
+        drinks
+        |> Seq.filter(fun drink -> drink.Time < time) 
+        |> Seq.map(fun drink -> calculateAlcoholLevel drink profile time)
+        |> Seq.sum
+    alcoholLevel
+
 let chart = 
-    [0..12] 
-        |> Seq.map(fun i -> startTime.AddHours(-0.5).AddHours(float i * 0.5))
+    [0..24] 
+        |> Seq.map(fun i -> startTime.AddHours(-0.5).AddMinutes(15.0 * float i))
         |> Seq.map(fun time -> 
-            let alcoholLevel = 
-                drinks
-                |> Seq.filter(fun drink -> drink.Time < time) 
-                |> Seq.map(fun drink -> calculateAlcoholLevel drink profile time)
-                |> Seq.sum
+            let alcoholLevel = calculateCurrentAlcoholLevelAt profile drinks time
             (time, alcoholLevel))
         |> Seq.toList
         |> FSharpChart.Line
