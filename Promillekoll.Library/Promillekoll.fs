@@ -1,39 +1,39 @@
-﻿namespace Promillekoll.Lib
+﻿namespace Promillekoll.Library
 
 open System
 
+[<Measure>] type g
+[<Measure>] type kg
+[<Measure>] type ml
+[<Measure>] type abv
+[<Measure>] 
+type vol = 
+    static member toAbv (x:float<vol>) = x * 0.8<abv/vol>
+
+type Gender =
+    | Male      = 1
+    | Feemale   = 2
+
+type DrinkType =
+    | Beer      = 0
+    | Wine      = 1
+    | Cider     = 2
+    | Drink     = 3
+    | Spirits   = 4
+
+type DrinkEntry = { 
+    Type:DrinkType; 
+    Time:DateTime; 
+    Volume:float<ml>; 
+    Strength:float<vol>; 
+}
+
+type Profile = { 
+    Gender:Gender; 
+    Weight:float<kg>; 
+}
+
 module Promillekoll =
-    [<Measure>] type g
-    [<Measure>] type kg
-    [<Measure>] type ml
-    [<Measure>] type abv
-    [<Measure>] 
-    type vol = 
-        static member toAbv (x:float<vol>) = x * 0.8<abv/vol>
-
-    type Gender =
-        | Male      = 1
-        | Feemale   = 2
-
-    type DrinkType =
-        | Beer      = 0
-        | Wine      = 1
-        | Cider     = 2
-        | Drink     = 3
-        | Spirits   = 4
-
-    type DrinkEntry = { 
-        Type:DrinkType; 
-        Time:DateTime; 
-        Volume:float<ml>; 
-        Strength:float<vol>; 
-    }
-
-    type Profile = { 
-        Gender:Gender; 
-        Weight:float<kg>; 
-    }
-
     let private gramsPerMilliliters : float<g ml^-1> = 1.0<g/ml>
 
     let private calculateAlcoholWeight (amount:float<ml>) (strength:float<vol>) =
@@ -63,5 +63,6 @@ module Promillekoll =
             [0..12] 
                 |> Seq.map(fun i -> startTime.AddHours(-0.5).AddHours(float i * 0.5))
                 |> Seq.map(fun time -> (time, calculateCurrentAlcoholLevelAt profile drinks time))
-                |> Seq.toList
+                |> Seq.toList 
+                |> List.toSeq
         values
