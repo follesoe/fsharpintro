@@ -31,7 +31,7 @@ let allCustomers = query {
 
 allCustomers |> Seq.iter (fun row -> 
     let (companyName, contactName) = row
-    printfn "%s %s" companyName contactName)
+    printfn "%s Contact: %s" companyName contactName)
 
 let customersByCountry = 
     query {
