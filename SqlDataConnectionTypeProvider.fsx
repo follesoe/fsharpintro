@@ -21,3 +21,7 @@ let query1 =
             select row
         }
 query1 |> Seq.iter (fun row -> printfn "%s %s %s" row.FirstName row.LastName row.Country)
+
+let query2 = query { for row in db.Customers do select row }
+
+query2 |> Seq.iter (fun row -> printfn "%s %s" row.CompanyName row.ContactName)
