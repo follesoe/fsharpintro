@@ -49,17 +49,19 @@ module Promillekoll =
         let weightFactor = if(profile.Gender = Gender.Male) then 0.70 else 0.60
         Math.Max(0.0, float (amountOfAlcohol / (profile.Weight * weightFactor)) - (0.15 * time.Subtract(drink.Time).TotalHours))
 
-    let calculateAlcoholLevel profile drinks =
+    let calculateCurrentAlcoholLevelAt profile drinks time = 
+        let alcoholLevel = 
+            drinks
+            |> Seq.filter(fun drink -> drink.Time < time) 
+            |> Seq.map(fun drink -> calculateAlcoholLevelForDrink drink profile time)
+            |> Seq.sum
+        alcoholLevel
+
+    let calculateAlcoholLevelOverTime profile drinks =
         let startTime = (List.head drinks).Time
         let values = 
             [0..12] 
                 |> Seq.map(fun i -> startTime.AddHours(-0.5).AddHours(float i * 0.5))
-                |> Seq.map(fun time -> 
-                    let alcoholLevel = 
-                        drinks
-                        |> Seq.filter(fun drink -> drink.Time < time) 
-                        |> Seq.map(fun drink -> calculateAlcoholLevelForDrink drink profile time)
-                        |> Seq.sum
-                    (time, alcoholLevel))
+                |> Seq.map(fun time -> (time, calculateCurrentAlcoholLevelAt profile drinks time))
                 |> Seq.toList
         values
