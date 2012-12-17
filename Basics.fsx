@@ -5,6 +5,35 @@
 let num = 123
 let str = "Hello World"
 
+(* F# is Immutable by default. *)
+let x = 1
+let x = 2
+let x = 3
+let x = "abc"
+
+// Can specify that a variable is mutable.
+let mutable y = 1
+y <- 2
+y <- 3
+
+let i = 0;
+while i < 10 do
+    let i = i + 1 // Creates a new i, different from outer i.
+    printfn "%i" i
+    ()
+
+let mutable j = 0;
+while j < 10 do
+    j <- j + 1
+    printfn "%i" j
+    ()
+
+let z = 5
+let f x = z + x
+f 10
+let z = 10
+f 10
+
 open System
 
 (*  Define functions using the let keyword.
@@ -26,6 +55,18 @@ let divisibleByAlt2 (factor, value) = // This is a single tuple argument, not tw
 let divisibleByAlt3 (factor:int) (value:int) = // Can provide type annotations to arguments
     value % factor = 0
 
+(*  Type aliasing *)
+type Username = string
+type Predicate<'a> = 'a -> bool
+
+let auth (username:Username) (pred:Predicate<Username>) =
+    if pred(username) then true else false
+
+let checkForRoot username = username = "root"    
+
+auth "follesoe" checkForRoot
+auth "root" checkForRoot
+ 
 (* Use the rec keyword to tell the F# Type Inference system
    this is a recursive function. *)
 let rec fact n =
