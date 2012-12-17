@@ -79,7 +79,7 @@ let rec bigfact n =
    Brackets around function name tells F# it is an operator *)
 let (^^) n p = Math.Pow(n, p)
 
-let (=~=) pattern text = System.Text.RegularExpressions.Regex.IsMatch(text, pattern)
+let (=~=) text pattern = System.Text.RegularExpressions.Regex.IsMatch(text, pattern)
 
 // Pattern matching
 let count n =
@@ -105,6 +105,43 @@ let describeOption o =
     | Some(42)  -> "The answer to everything!"
     | Some(x)   -> sprintf "The answer was %d" x
     | None      -> "No answer."
+
+(*  Active Patterns are special functions that can
+    be used inside of pattern-matching. Using them eliminates the
+    need for when guards, and also makes the code more redable. *)
+open System.IO
+
+// Single-Case Active Patterns
+let (|FileExtension|) filePath = Path.GetExtension(filePath)
+
+let determineFileType (filePath : string) =
+    match filePath with
+    // Without using active patterns
+    | filePath when Path.GetExtension(filePath) = ".txt" 
+                            -> printfn "A text file."
+    | FileExtension ".jpg"
+    | FileExtension ".png"
+    | FileExtension ".gif"  -> printfn "An image file."
+    | FileExtension ext     -> printfn "Unknown extension (%s)" ext
+
+(*  Partial active patterns allow you to define active patterns 
+    that don't always convert the input data. To do this, a partial
+    active pattern returns an option type *)
+open System
+
+let (|ToBool|_|) x =
+    let success, result = Boolean.TryParse(x)
+    if (success) then Some(result) else None
+
+let (|ToInt|_|) x =
+    let success, result = Int32.TryParse(x)
+    if (success) then Some(result) else None
+
+let describeString str =
+    match str with
+    | ToBool b  -> printfn "%s is a bool with value %b" str b
+    | ToInt i   -> printfn "%s is a int wiht value %d" str i
+    | _         -> printfn "%s is not a boolean or an integer" str
 
 // Tuples
 let nameTuple = ("Jonas", "Follesø")
@@ -143,7 +180,8 @@ let sequared nums = List.map (fun x -> x * x) nums
 let even nums = List.filter (fun x -> divisibleBy 2 x) nums
 
 // Composing list operators
-let sequaredEvens_bad nums = List.map (fun x -> x * x) (List.filter (fun x -> divisibleBy 2 x) nums)
+let sequaredEvens_bad nums = 
+    List.map (fun x -> x * x) (List.filter (fun x -> divisibleBy 2 x) nums)
 
 // Pipe-forward operator
 let sequaredEvens nums = 
@@ -156,9 +194,9 @@ let squaredOdds nums =
     |> List.filter(not << divisibleBy 2) // Function composition
     |> List.map(fun x -> x * x)
     
-// Defined as: let (|>) x f = f x
-// Given a generic type 'a, and a function which takes 'a and returns 'b,
-// then return the application of the function of the input.
+(*  Defined as: let (|>) x f = f x
+    Given a generic type 'a, and a function which takes 'a and returns 'b,
+    then return the application of the function of the input. *)
 
 let square x = x * x
 let toStr (x : int) = x.ToString()
@@ -167,8 +205,7 @@ let rev (x : string) = new String(Array.rev(x.ToCharArray()))
 let result = rev (toStr (square 512))
 let result2 = 512 |> square |> toStr |> rev
 
-(*  Partial function application
-    F# uses currying - the ability to transform a 
+(*  F# suports currying - the ability to transform a 
     function taking n arguments, into a chain of n functions,
     each taking one argument. *)
 
@@ -180,50 +217,6 @@ let divisibleByTwo = divisibleBy 2
     create a function computing g(f(a)) *)
 let reversedSquareStr = square >> toStr >> rev
 let reversedSquareStr2 = rev << toStr << square 
-
-// Pattern matching on lists
-let rec tryFind predicate list = 
-    match list with
-    | []                            -> None
-    | x :: rest when predicate x    -> Some x
-    | _ :: rest                     -> tryFind predicate rest
-
-(*  Active Patterns are special functions that can
-    be used inside of pattern-matching. Using them eliminates the
-    need for when guards, and also makes the code more redable. *)
-open System.IO
-
-// Single-Case Active Patterns
-let (|FileExtension|) filePath = Path.GetExtension(filePath)
-
-let determineFileType (filePath : string) =
-    match filePath with
-    // Without using active patterns
-    | filePath when Path.GetExtension(filePath) = ".txt" 
-                            -> printfn "A text file."
-    | FileExtension ".jpg"
-    | FileExtension ".png"
-    | FileExtension ".gif"  -> printfn "An image file."
-    | FileExtension ext     -> printfn "Unknown extension (%s)" ext
-
-(*  Partial active patterns allow you to define active patterns 
-    that don't always convert the input data. To do this, a partial
-    active pattern returns an option type *)
-open System
-
-let (|ToBool|_|) x =
-    let success, result = Boolean.TryParse(x)
-    if (success) then Some(result) else None
-
-let (|ToInt|_|) x =
-    let success, result = Int32.TryParse(x)
-    if (success) then Some(result) else None
-
-let describeString str =
-    match str with
-    | ToBool b  -> printfn "%s is a bool with value %b" str b
-    | ToInt i   -> printfn "%s is a int wiht value %d" str i
-    | _         -> printfn "%s is not a bool or int" str
 
 // Define a record
 type Person = { Age:int; Name:string; Twitter:string }

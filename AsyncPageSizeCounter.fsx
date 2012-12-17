@@ -2,7 +2,9 @@
 open System.IO
 open System.Net
 
-let urls = [ "http://www.vg.no"; "http://www.db.no" ]
+let urls = [ 
+    "https://raw.github.com/follesoe/fsharpintro/master/AsyncPageSizeCounter.fsx"; 
+    "https://raw.github.com/follesoe/fsharpintro/master/WsdlServiceTypeProvider.fsx" ]
 
 let printResult (url:string) (result:string) = 
     printfn "Size of %s is %i" url result.Length
@@ -12,7 +14,7 @@ let fetchAsync (url:string) =
         let uri = new Uri(url)
         let webClient = new WebClient()
         let! html = webClient.AsyncDownloadString(uri)
-        printResult url html
+        return html
     }
 
 let download =
@@ -20,4 +22,6 @@ let download =
     |> Seq.map fetchAsync
     |> Async.Parallel
     |> Async.RunSynchronously
+    |> Seq.reduce (+)
+    |> printfn "%s"
     |> ignore
