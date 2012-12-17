@@ -99,6 +99,12 @@ let rec listLength l =
     | [_;_;_]   -> 3
     | head :: tail -> 1 + listLength tail
 
+// Map implemented using recursion and pattern matching
+let rec myMap l f =
+    match l with
+    | []    -> []
+    | head :: tail -> f(head) :: myMap tail f
+
 // Pattern matching on discriminated union (Options)
 let describeOption o =
     match o with

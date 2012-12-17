@@ -33,7 +33,7 @@ let myMass = 82.0<kg>
 let forceOnGround = myMass * gravityOnEarth
 
 // Creating a derived unit of measrue: Newton
-[<Measure>] type N = kg m/s^2
+[<Measure>] type N = kg m/s^2 // Type aliasing/abbrevation
 
 let forceOnGroundInNewton:float<N> = myMass * gravityOnEarth
 
