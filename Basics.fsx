@@ -72,14 +72,12 @@ auth "root" checkForRoot
 let rec fact n =
     if n <= 1 then 1 else n * fact (n-1) // If is an expression with a value.
 
-let rec bigfact n =
-    if n <= 1I then 1I else n * bigfact (n - 1I) // 1I is a BigInteger.
-
 (* You can add new infix operators. 
    Brackets around function name tells F# it is an operator *)
 let (^^) n p = Math.Pow(n, p)
 
-let (=~=) text pattern = System.Text.RegularExpressions.Regex.IsMatch(text, pattern)
+let (=~=) text pattern = 
+    System.Text.RegularExpressions.Regex.IsMatch(text, pattern)
 
 // Pattern matching
 let count n =
@@ -206,7 +204,9 @@ let squaredOdds nums =
 
 let square x = x * x
 let toStr (x : int) = x.ToString()
-let rev (x : string) = new String(Array.rev(x.ToCharArray()))
+let rev (x : string) = 
+    let letters = x.ToCharArray()
+    new String(Array.rev(letters))
 
 let result = rev (toStr (square 512))
 let result2 = 512 |> square |> toStr |> rev
@@ -224,11 +224,15 @@ let divisibleByTwo = divisibleBy 2
 let reversedSquareStr = square >> toStr >> rev
 let reversedSquareStr2 = rev << toStr << square 
 
+reversedSquareStr 10
+reversedSquareStr2 10
+
 // Define a record
 type Person = { Age:int; Name:string; Twitter:string }
 
 // Type inference of record
 let me = { Age = 29; Name = "Jonas"; Twitter = "follesoe" }
+let me2 = { Age = 29; Name = "Jonas"; Twitter = "follesoe" }
 let olderMe = { me with Age = 30 } // Cloning.
 
 // Pattern matching on records

@@ -23,15 +23,3 @@ let presidents =
 presidents |> Seq.iter(fun p ->     
                 let height, name = p
                 printfn "%A %s" height.Value name)
-
-// Print functional programming languages
-(*
-let computers = data.``Science and Technology``.Computers
-
-let languages = 
-    query {
-        for language in computers.``Programming Languages`` do
-        for paradigm in language.``Language Paradigms`` do
-        select (language.Name, language.``Language Designers``, language.``Language Paradigms``)
-    } |> Seq.toList
-*)

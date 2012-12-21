@@ -6,9 +6,6 @@ let urls = [
     "https://raw.github.com/follesoe/fsharpintro/master/AsyncPageSizeCounter.fsx"; 
     "https://raw.github.com/follesoe/fsharpintro/master/WsdlServiceTypeProvider.fsx" ]
 
-let printResult (url:string) (result:string) = 
-    printfn "Size of %s is %i" url result.Length
-
 let fetchAsync (url:string) =
     async {
         let uri = new Uri(url)
