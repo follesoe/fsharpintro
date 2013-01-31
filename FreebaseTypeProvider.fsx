@@ -1,5 +1,5 @@
 ﻿#r "FSharp.Data.TypeProviders"
-#r @"packages\FSharpx.TypeProviders.Freebase.1.6.122\lib\40\Fsharpx.TypeProviders.Freebase.dll"
+#r @"packages\FSharpx.TypeProviders.Freebase.1.7.3\lib\40\Fsharpx.TypeProviders.Freebase.dll"
 
 let data = FSharpx.TypeProviders.Freebase.FreebaseData.GetDataContext()
 

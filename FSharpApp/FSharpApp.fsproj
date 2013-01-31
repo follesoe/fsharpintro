@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ea5a81dd-7cfd-4f8e-9e90-ee4e4afdeadf</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>FSharpApp</RootNamespace>
+    <AssemblyName>FSharpApp</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <Name>FSharpApp</Name>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Debug\FSharpApp.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>bin\Release\FSharpApp.XML</DocumentationFile>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\packages\FSharp.Data.1.0.13\lib\net40\FSharp.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharp.Data.Experimental">
+      <HintPath>..\packages\FSharp.Data.Experimental.1.0.2\lib\net40\FSharp.Data.Experimental.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders">
+      <HintPath>..\packages\FSharpx.TypeProviders.1.7.3\lib\40\FSharpx.TypeProviders.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.AppSettings">
+      <HintPath>..\packages\FSharpx.TypeProviders.AppSettings.1.7.3\lib\40\FSharpx.TypeProviders.AppSettings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Documents">
+      <HintPath>..\packages\FSharpx.TypeProviders.Documents.1.7.3\lib\40\FSharpx.TypeProviders.Documents.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Excel">
+      <HintPath>..\packages\FSharpx.TypeProviders.Excel.1.7.3\lib\40\FSharpx.TypeProviders.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Freebase">
+      <HintPath>..\packages\FSharpx.TypeProviders.Freebase.1.7.3\lib\40\FSharpx.TypeProviders.Freebase.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Freebase.DesignTime">
+      <HintPath>..\packages\FSharpx.TypeProviders.Freebase.1.7.3\lib\40\FSharpx.TypeProviders.Freebase.DesignTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Graph">
+      <HintPath>..\packages\FSharpx.TypeProviders.Graph.1.7.3\lib\40\FSharpx.TypeProviders.Graph.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Machine">
+      <HintPath>..\packages\FSharpx.TypeProviders.Machine.1.7.3\lib\40\FSharpx.TypeProviders.Machine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Management">
+      <HintPath>..\packages\FSharpx.TypeProviders.Management.1.7.3\lib\40\FSharpx.TypeProviders.Management.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Management.DesignTime">
+      <HintPath>..\packages\FSharpx.TypeProviders.Management.1.7.3\lib\40\FSharpx.TypeProviders.Management.DesignTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Math">
+      <HintPath>..\packages\FSharpx.TypeProviders.Math.1.7.3\lib\40\FSharpx.TypeProviders.Math.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Regex">
+      <HintPath>..\packages\FSharpx.TypeProviders.Regex.1.7.3\lib\40\FSharpx.TypeProviders.Regex.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FSharpx.TypeProviders.Xaml">
+      <HintPath>..\packages\FSharpx.TypeProviders.Xaml.1.7.3\lib\40\FSharpx.TypeProviders.Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="FSharp.Core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.fs" />
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets" Condition=" Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

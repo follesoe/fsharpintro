@@ -1,5 +1,5 @@
 ﻿#r "FSharp.Data.TypeProviders"
-#r @"packages\FSharpx.TypeProviders.Regex.1.6.122\lib\40\Fsharpx.TypeProviders.Regex.dll"
+#r @"packages\FSharpx.TypeProviders.Regex.1.7.3\lib\40\Fsharpx.TypeProviders.Regex.dll"
 
 type DateRegex = FSharpx.Regex< @"(?<Day>\d{2}).(?<Month>\d{2}).(?<Year>\d{4})">
 

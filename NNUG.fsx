@@ -11,32 +11,14 @@ let x = 2
 let x = 3
 let x = "abc"
 
-// Can specify that a variable is mutable.
+(* Must explicitly make a variable mutable *)
 let mutable y = 1
 y <- 2
 y <- 3
 
-let i = 0;
-while i < 10 do
-    let i = i + 1 // Creates a new i, different from outer i.
-    printfn "%i" i
-    ()
-
-let mutable j = 0;
-while j < 10 do
-    j <- j + 1
-    printfn "%i" j
-    ()
-
-let z = 5
-let f x = z + x
-f 10
-let z = 10
-f 10
-
 open System
 
-(*  Define functions using the let keyword.
+(*  Define function bindings using the let keyword.
     Do not specify the types. 
     White space significant. 
     No explicit return - everything is an expression. *)
@@ -58,11 +40,16 @@ let divisibleByAlt3 (factor:int) (value:int) = // Can provide type annotations t
 (*  Type aliasing *)
 type Username = string
 type Predicate<'a> = 'a -> bool
+type Coordinate = int*int
+
+let swap (coord:Coordinate) =
+    (snd coord, fst coord)
 
 let auth (username:Username) (pred:Predicate<Username>) =
     if pred(username) then true else false
 
-let checkForRoot username = username = "root"    
+let checkForRoot username = 
+    username = "root"    
 
 auth "follesoe" checkForRoot
 auth "root" checkForRoot
@@ -98,8 +85,8 @@ let rec listLength l =
     | head :: tail -> 1 + listLength tail
 
 // Map implemented using recursion and pattern matching
-let rec myMap l f =
-    match l with
+let rec myMap list f =
+    match list with
     | []    -> []
     | head :: tail -> f(head) :: myMap tail f
 
@@ -110,52 +97,12 @@ let describeOption o =
     | Some(x)   -> sprintf "The answer was %d" x
     | None      -> "No answer."
 
-(*  Active Patterns are special functions that can
-    be used inside of pattern-matching. Using them eliminates the
-    need for when guards, and also makes the code more redable. *)
-open System.IO
-
-// Single-Case Active Patterns
-let (|FileExtension|) filePath = Path.GetExtension(filePath)
-
-let determineFileType (filePath : string) =
-    match filePath with
-    // Without using active patterns
-    | filePath when Path.GetExtension(filePath) = ".txt" 
-                            -> printfn "A text file."
-    | FileExtension ".jpg"
-    | FileExtension ".png"
-    | FileExtension ".gif"  -> printfn "An image file."
-    | FileExtension ext     -> printfn "Unknown extension (%s)" ext
-
-(*  Partial active patterns allow you to define active patterns 
-    that don't always convert the input data. To do this, a partial
-    active pattern returns an option type *)
-open System
-
-let (|ToBool|_|) x =
-    let success, result = Boolean.TryParse(x)
-    if (success) then Some(result) else None
-
-let (|ToInt|_|) x =
-    let success, result = Int32.TryParse(x)
-    if (success) then Some(result) else None
-
-let describeString str =
-    match str with
-    | ToBool b  -> printfn "%s is a bool with value %b" str b
-    | ToInt i   -> printfn "%s is a int wiht value %d" str i
-    | _         -> printfn "%s is not a boolean or an integer" str
-
 // Tuples
 let nameTuple = ("Jonas", "Follesø")
 let fname = fst nameTuple
 let lname = snd nameTuple
 
-let swap (a, b) = (b, a)
-let swapped = swap nameTuple
-
-// Lett bindings are actually pattern-match rules..
+// Lett bindings are actually pattern-match rules
 let firstname, lastname = nameTuple
 
 // .. is the same as
@@ -253,7 +200,7 @@ type Errorable<'a> =
     | Success of 'a
     | Error of string
 
-(* A discriminated union is a type that can only
+(* A discriminated union is a type that can s
    be one of a set of possible values. Each possible
    value is referred to as a union case *)
 
@@ -278,59 +225,29 @@ type PlayingCard =
         | Jack(_) -> 11
         | ValueCard(value, _) -> value
 
+// List comprehension creating a playing deck.
 let deckOfCards = [
     for suit in [ Spade; Club; Heart; Diamond ] do
         yield Ace(suit)
         yield King(suit)
         yield Queen(suit)
         yield Jack(suit)
-        for value in 2 .. 10 do
-            yield ValueCard(value, suit)
+        for value in 2 .. 10 do yield ValueCard(value, suit)
 ]
-
-
-type Number = Odd | Even
-
-// Trees are easaly represented using disc. unions.
-type BinaryTree = 
-    | Node of int * BinaryTree * BinaryTree
-    | Empty
-
-// Pattern matching on disc. unions.    
-let rec printInOrder tree =
-    match tree with
-    | Node (data, left, right)
-        ->  printInOrder left
-            printfn "Node %d" data
-            printInOrder right
-    | Empty -> ()
-
-let binTree = 
-    Node(2,
-        Node(1, Empty, Empty),
-        Node(4,
-            Node(3, Empty, Empty),
-            Node(5, Empty, Empty)
-        )
-    )
 
 // Pattern matching on list of Discriminated Unions
 let describeHoleCards cards = 
     match cards with
     | []
-    | [_]
-        -> failwith "Too few cards."
-    | cards when List.length cards > 2
-        -> failwith "Too many cards."
+    | [_] -> failwith "Too few cards."
+    | cards when List.length cards > 2 -> failwith "Too many cards."
     | [ Ace(_); Ace(_) ] -> "Pocket Rockets"
     | [ King(_); King(_) ] -> "Cowboys"
     | [ ValueCard(2, _); ValueCard(2, _)] -> "Ducks"
     | [ Queen(_); Queen(_) ]
     | [ Jack(_); Jack(_) ] -> "Pair of face cards"
-    | [ ValueCard(x, _); ValueCard(y, _) ] when x = y
-        -> "A Pair"
-    | [ first; second ] 
-        -> sprintf "Two cards: %A and %A" first second
+    | [ ValueCard(x, _); ValueCard(y, _) ] when x = y -> "A Pair"
+    | [ first; second ]  -> sprintf "Two cards: %A and %A" first second
 
 
 (*  Queries and F# Query Expressions aka LINQ
@@ -360,19 +277,3 @@ let following2 = query {
     select person.Twitter
     distinct
 }
-
-type Person2(age, name, email) =
-    member x.age = age
-    member x.name = name
-    member x.email = email
-    override x.ToString() = sprintf "%s (%d)" name age
-
-let person1 = new Person2(29, "Jonas", "jonas@follesoe.no")    
-let asString = person1.ToString()
-    
-type Person3 = 
-    { Age:int; Name:string; Email:string }
-    override x.ToString() = sprintf "%s (%d)" x.Name x.Age
-
-let person2 = { Age = 29; Name = "Jonas"; Email="jonas@follesoe.no"}
-
