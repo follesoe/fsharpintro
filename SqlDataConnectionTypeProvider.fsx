@@ -18,7 +18,6 @@ db.DataContext.Log <- System.Console.Out
 let ukCustomers =
         query {
             for row in db.Employees do
-
             where (row.Country = "UK")
             select row
         }

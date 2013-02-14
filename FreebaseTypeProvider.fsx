@@ -12,6 +12,7 @@ elems
 |> Seq.iter(fun e -> printfn "%s\t%s" e.Symbol e.Name)
 
 // Print the US presidents sorted by height
+(*
 let presidents = 
     query {
         for president in data.Society.Government.``US Presidents`` do
@@ -23,3 +24,4 @@ let presidents =
 presidents |> Seq.iter(fun p ->     
                 let height, name = p
                 printfn "%A %s" height.Value name)
+*)

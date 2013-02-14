@@ -45,15 +45,6 @@ type Coordinate = int*int
 let swap (coord:Coordinate) =
     (snd coord, fst coord)
 
-let auth (username:Username) (pred:Predicate<Username>) =
-    if pred(username) then true else false
-
-let checkForRoot username = 
-    username = "root"    
-
-auth "follesoe" checkForRoot
-auth "root" checkForRoot
- 
 (* Use the rec keyword to tell the F# Type Inference system
    this is a recursive function. *)
 let rec fact n =

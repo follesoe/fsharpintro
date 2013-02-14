@@ -8,6 +8,7 @@ open Microsoft.FSharp.Data.TypeProviders
 type Netflix = ODataService<"http://odata.netflix.com/Catalog/">
 let data = Netflix.GetDataContext()
 
+(*
 let topMovies = query {
     for movie in data.Titles do
     where (movie.Name.Contains "Christmas")
@@ -17,5 +18,7 @@ let topMovies = query {
     select movie
 }
 
-topMovies |> Seq.iter (fun m -> 
-                printfn "%A: %s (%A)" m.AverageRating m.Name m.ReleaseYear)
+topMovies 
+|> Seq.iter (fun m -> 
+    printfn "%A: %s (%A)" m.AverageRating m.Name m.ReleaseYear)
+*)
