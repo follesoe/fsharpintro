@@ -45,19 +45,16 @@ type Coordinate = int*int
 let swap (coord:Coordinate) =
     (snd coord, fst coord)
 
-(* Use the rec keyword to tell the F# Type Inference system
-   this is a recursive function. *)
-let rec fact n =
-    if n <= 1 then 1 else n * fact (n-1) // If is an expression that evalues to a value.
-
-(* You can add new infix operators. 
+(* You can define new infix operators. 
    Brackets around function name tells F# it is an operator *)
 let (^^) n p = Math.Pow(n, p)
 
 let (=~=) text pattern = 
     System.Text.RegularExpressions.Regex.IsMatch(text, pattern)
 
-// Pattern matching
+(* Pattern matching ... *)
+
+// ... on constants
 let count n =
     match n with
     | 0 -> "none"
@@ -66,7 +63,7 @@ let count n =
     | _ when n < 0 -> "confused" // When guard.
     | _ -> "many"
 
-// Pattern matching on list
+// ... on lists
 let rec listLength l =
     match l with
     | []        -> 0
@@ -75,13 +72,13 @@ let rec listLength l =
     | [_;_;_]   -> 3
     | head :: tail -> 1 + listLength tail
 
-// Map implemented using recursion and pattern matching
+// ... map implemented using pattern matching.
 let rec myMap list f =
     match list with
     | []    -> []
     | head :: tail -> f(head) :: myMap tail f
 
-// Pattern matching on discriminated union (Options)
+// ... on Discriminated Unions
 let describeOption o =
     match o with
     | Some(42)  -> "The answer to everything!"
@@ -93,7 +90,7 @@ let nameTuple = ("Jonas", "Follesø")
 let fname = fst nameTuple
 let lname = snd nameTuple
 
-// Lett bindings are actually pattern-match rules
+// Lett bindings are pattern-match rules
 let firstname, lastname = nameTuple
 
 // .. is the same as
@@ -101,7 +98,7 @@ match nameTuple with
 | fname, lname -> sprintf "Hello %s %s" fname lname
 
 // List literals
-let smallOddPrimes = [3; 5; 7] // Object.ReferenceEquals(smallPrimes.Tail, smallOddPrimes);;
+let smallOddPrimes = [3; 5; 7]
 
 // List construction (cons)
 let smallPrimes = 2 :: smallOddPrimes // Creates a new list. Show with obj. equals.
@@ -125,7 +122,9 @@ let even nums = List.filter (fun x -> divisibleBy 2 x) nums
 let sequaredEvens_bad nums = 
     List.map (fun x -> x * x) (List.filter (fun x -> divisibleBy 2 x) nums)
 
+
 // Pipe-forward operator
+
 let sequaredEvens nums = 
     nums 
     |> List.filter(divisibleBy 2) // Partial function application
@@ -135,6 +134,12 @@ let squaredOdds nums =
     nums
     |> List.filter(not << divisibleBy 2) // Function composition
     |> List.map(fun x -> x * x)
+
+(*  F# suports currying - the ability to transform a 
+    function taking n arguments, into a chain of n functions,
+    each taking one argument. *)
+
+let divisibleByTwo = divisibleBy 2
     
 (*  Defined as: let (|>) x f = f x
     Given a generic type 'a, and a function which takes 'a and returns 'b,
@@ -149,11 +154,21 @@ let rev (x : string) =
 let result = rev (toStr (square 512))
 let result2 = 512 |> square |> toStr |> rev
 
-(*  F# suports currying - the ability to transform a 
-    function taking n arguments, into a chain of n functions,
-    each taking one argument. *)
 
-let divisibleByTwo = divisibleBy 2
+(* How |> works *)
+let divByTwo = divisibleBy 2
+let nums = [1; 2; 3; 4;]
+let filterDivByTwo = Seq.filter divByTwo // Partial application of Seq.filter - missing list.
+
+let res1 = Seq.filter divByTwo nums      // Traditional call, two args, fitler and nums.
+let res2 = nums |> Seq.filter divByTwo   // Traditional use of pipe-forward operator.
+let res3 = (|>) nums filterDivByTwo      // Explicit call of infix operator. First arg is value, second function. Function is applied to arg.
+let res4 = nums |> filterDivByTwo        // Use of infix operator curried filter function.
+
+res1 |> Seq.toList |> printfn "res1: %A"
+res2 |> Seq.toList |> printfn "res2: %A"
+res3 |> Seq.toList |> printfn "res3: %A"
+res4 |> Seq.toList |> printfn "res4: %A"
 
 (*  Function composition using << or >>
     Given two functions, f and g and a value a, compute
