@@ -40,7 +40,9 @@ let funB = fun a b -> a + b
 let resA = funA 5 5
 let resB = funB 5 5
 
-(* F# has first-class functions. *)
+(* 
+   F# has first-class functions. 
+*)
 let makeAdder n = fun i -> n + i // ... functions can return new functions
 let add5 = makeAdder 5 // ... we can assign functions to variables (value binding)
 add5 10 // ... evaluates to 15.
@@ -52,5 +54,18 @@ let rec myMap f list =
     
 myMap add5 [1;2;3] // [6; 7; 8]
 
+(* In F# everything is an expression.
+   An "expression" is a combination of values and functions that are combined to create a new value,
+   opposed to a "statement" which is just a standalone unit of execution and doesn't return anything.
+   The purpose of an expression is to compute a value (with some possible side-effect), while the 
+   sole purpose of a statement is to have side-effects.
+   
+   In F#, even loops, pattern-matching and control-structures are expressions.
+*)
 
+let val1 = if 10 > 0 then 5 else 10
+let val2 = match val1 with
+            | 10 -> "Ten"
+            | _ -> "Something else..."
+            
 
