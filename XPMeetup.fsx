@@ -230,6 +230,15 @@ nums |> myFilter
 
 nums |> List.map square |> List.filter isOdd
 
+(* Have other function composition operators *)
+
+(*  Function composition using << or >>
+    Given two functions, f and g and a value a, compute
+    f of a and pass that to g. By passing in only f and g, you can
+    create a function computing g(f(a)) *)
+let cubeTheSquare = square >> cube
+let cubeTheSquare2 = cube << square
+
 (* Pattern matching is a key technique to deconstruct data *)
 
 let describeNum n =
