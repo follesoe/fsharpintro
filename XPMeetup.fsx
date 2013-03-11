@@ -183,7 +183,12 @@ let rec oddNums nums =
     | hd :: tail -> if isOdd hd then hd :: oddNums tail 
                     else oddNums tail
 
+(* Assignment: what is the generic part of the functions above?
+   Create a new function with an appropiate name, that takes a higher-order function
+   for the spesific part of the function *)
+
 (* The function f is the spesific part, map is the generic part *)
+
 let rec map f list = 
     match list with
     | [] -> []
