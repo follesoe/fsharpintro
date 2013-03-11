@@ -335,3 +335,40 @@ let describeHoleCards cards =
     | [ ValueCard(x, _); ValueCard(y, _) ] when x = y -> "A Pair"
     | [ first; second ]  -> sprintf "Two cards: %A and %A" first second
     | _ -> sprintf "Error..."
+
+(*  Define Units of Measure as 
+    types annotated with the Measure-annotation *)
+
+[<Measure>] type kg
+[<Measure>] type s
+[<Measure>] type m
+[<Measure>] type cm
+[<Measure>] type km
+[<Measure>] type h            
+[<Measure>] type ml = cm^3
+
+// Units are attached to integers or floating point numbers.
+let gravityOnEarth = 9.81<m/s^2>
+let heightOfJump = 3.5<m>
+
+// F# works out the new units based operations applied to the values.
+let speedOfImpact = sqrt (2.0 * gravityOnEarth * heightOfJump)
+
+(*  Can convert between units by defining conversion
+    constants and helper functions applying the conversions. *)
+let kmToM = 1000.0<m/km>
+let hrToSec = 3600.0<s/h>
+
+let msToKmph(speed : float<m/s>) =
+    speed / kmToM * hrToSec
+
+let speedOfImpactKmh = msToKmph(speedOfImpact)
+
+[<Measure>] type degC
+[<Measure>] type degF
+
+let convertCtoF temp = 
+    9.0<degF> / 5.0<degC> * temp + 32.0<degF>
+
+let convertFtoC temp = 
+    5.0<degC> / 9.0<degF> * (temp - 32.0<degF>)
