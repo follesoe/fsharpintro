@@ -54,6 +54,15 @@ let rec myMap f list =
     
 myMap add5 [1;2;3] // [6; 7; 8]
 
+(* F# Type Inference supports polymorphic functions *)
+let polyFun1 a b c =
+    a + c
+    
+let polyFun2 a b c =
+    a = c
+    
+(* In F#, white-space is significant, and we do not have explicit return statements *)
+
 (* In F# everything is an expression.
    An "expression" is a combination of values and functions that are combined to create a new value,
    opposed to a "statement" which is just a standalone unit of execution and doesn't return anything.
@@ -64,8 +73,15 @@ myMap add5 [1;2;3] // [6; 7; 8]
 *)
 
 let val1 = if 10 > 0 then 5 else 10
+
 let val2 = match val1 with
             | 10 -> "Ten"
             | _ -> "Something else..."
-            
+
+let val3 = fun () -> 1
+
+let val4 = try 
+                1 / 0
+            with
+                | e -> 100                
 
