@@ -7,7 +7,6 @@ let isMatch = DateRegex.IsMatch "17.12.2012"
 
 let dateMatch = DateRegex().Match("17.12.2012")
 
-
 // We get intellisense for the regex match.
 
 (*
